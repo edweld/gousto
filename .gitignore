@@ -1,0 +1,4 @@
+app.db
+recipe-data.csv
+composer.lock
+vendor
