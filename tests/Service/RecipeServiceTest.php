@@ -54,15 +54,9 @@ class RecipeServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(3, count($data));
     }
 
-    public function test_countRatingsForId()
+    public function test_fetchRating()
     {
-        $data = $this->recipeService->countRatingsForId(1);
-        $this->assertEquals(2, $data);
-    }
-
-    public function test_fetchAllRatingsForRecipe()
-    {
-        $data = $this->fetchAllRatingsForRecipe();
+        $data = $this->recipeService->fetchRating(1);
         $this->assertEquals(2, count($data));
         $this->assertEquals( 5, $data[0]['rating']);
     }
@@ -73,8 +67,8 @@ class RecipeServiceTest extends \PHPUnit\Framework\TestCase
     {
         $recipe = ['title'=>'updatedtitle'];
         $result = $this->recipeService->updateRecipeById( 1, $recipe);
-        $this->assertTrue($result);
-        $data = $this->recipeService->getOneById(1);
+        $this->assertEquals(1, $result);
+        $data = $this->recipeService->fetchOneById(1);
         $this->assertEquals('updatedtitle', $data['title']);
     }
 
@@ -87,8 +81,9 @@ class RecipeServiceTest extends \PHPUnit\Framework\TestCase
         $id = $this->recipeService->addRecipe($recipe);
         $this->assertTrue( ($id > 0));
 
-        $data = $this->recipeService->getOneById($id);
-        $this->assertContains($recipe, $data);
+        $data = $this->recipeService->fetchOneById($id);
+        $this->assertEquals($recipe['title'],$data['title']);
+        $this->assertEquals($recipe['recipe_cuisine'],$data['recipe_cuisine']);
 
     }
    

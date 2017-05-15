@@ -31,42 +31,32 @@ class RecipeService extends BaseService {
      */
 	public function fetchAllByCuisine( $recipe_cuisine, $perpage, $page)
 	{
-
+        $page = ($page <= 1) ? 1 : $page;
+        $offset = ($page -1) * $perpage;
+        return $this->db->fetchAll("SELECT * FROM recipe WHERE recipe_cuisine=? LIMIT $offset, $perpage", [$recipe_cuisine]);
 	}
 
 	/**
-	 * Return total number of reviews for recipe_id
-	 * @access public
-	 * @param int $recipe_id recipe id
-	 * @return int total number of records
-	 */
-	public function countRatingsForId( int $recipe_id)
-	{
-
-	}
-
-	/**
-	 * Add rating for recipe
+	 * Fetch all ratings for recipe
 	 * @access public
 	 * @param int $recipe_id 
-	 * @param mixed $recipe Recipe data
-	 * @return int last insert id
+	 * @return mixed all ratings for recipe
 	 */
-	public function fetchAllRatingsForRecipe( int $recipe_id, $recipe)
+	public function fetchRating( int $recipe_id)
 	{
-
+        return $this->db->fetchAll("SELECT * from rating WHERE recipe_id =?",[$recipe_id]);
 	}
 
 	/**
 	 * Update existing recipe
 	 * @access public
 	 * @param int $id recipe id
-	 * @param mixed $recipe array of recipe data
+	 * @param mixed $recipe_update array of recipe data
 	 * @return int last insert id
 	 */
-	public function updateRecipeById(int $id, $recipe)
+	public function updateRecipeById(int $recipe_id, $recipe)
 	{
-
+         return $this->db->update('recipe', $recipe, ['id' => $recipe_id]);
 	}
 
 	/**
@@ -77,7 +67,20 @@ class RecipeService extends BaseService {
 	 */
 	public function addRecipe($recipe)
 	{
-
+        $this->db->insert("recipe", $recipe);
+        return $this->db->lastInsertId();
 	}
 
+	/**
+	 * Add rating to recipe
+	 * @access public
+	 * @param int $id recipe id to update
+	 * @param int $rating rating of recipe
+	 * @return int the last db insert id
+	 */
+	public function addRatingById( int $recipe_id, int $rating)
+	{
+		$this->db->insert("rating",['recipe_id'=>$recipe_id, 'rating'=>$rating]);
+		return $this->db->lastInsertId();
+	}
 }

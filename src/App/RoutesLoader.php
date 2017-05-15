@@ -28,7 +28,6 @@ class RoutesLoader
         $this->app = $app;
         $this->instantiateControllers();
 
-
     }
 
     /**
@@ -50,16 +49,13 @@ class RoutesLoader
      */
     public function bindRoutesToControllers()
     {
-        
         $api = $this->app["controllers_factory"];
-
-        $api->get("/recipe", "recipe.controller:getAll");
-        $api->get("/recipe/{id}", "recipe.controller:getOneById");
-        $api->get("/recipe/cuisine/{cuisine}/{perpage}/{page}", "recipe.controller:getAllByCuisine");
+        $api->get("/recipe/{id}", "recipe.controller:fetchOneById");
+        $api->get("/recipe/cuisine/{cuisine}/{perpage}/{page}", "recipe.controller:fetchAllByCuisine");
         $api->post("/recipe/add", "recipe.controller:addRecipe");
-        $api->post("/recipe/update/{$id}", "recipe.controller:updateRecipeById");
+        $api->post("/recipe/update/{id}", "recipe.controller:updateRecipeById");
         $api->get("/recipe/rating/{recipe_id}", "recipe.controller:fetchRating");
-        $api->post("/recipe/rating/{recipe_id}", "recipe.controller:addRating");
+        $api->post("/recipe/rating/{recipe_id}", "recipe.controller:addRatingById");
         $this->app->mount('/', $api);
     }
 }

@@ -39,7 +39,7 @@ class RecipeController
      * @param int $id the recipe id
      * @return object JsonResonse object
      */
-    public function fetchOneById( $id )
+    public function fetchOneById( int $id )
     {
     	$res = $this->recipeService->fetchOneById( (int) $id);
         if($res){
@@ -61,8 +61,8 @@ class RecipeController
     public function fetchAllByCuisine($cuisine, $page, $perpage)
     {
     	$validator = new CuisineValidator;
-
     	if($validator->validate($cuisine)){
+
     		$res = $this->recipeService->fetchAllByCuisine($cuisine, $perpage, $page);
     		return new JsonResponse($res);
     	}
@@ -94,7 +94,8 @@ class RecipeController
     public function updateRecipeById(int $id, Request $request)
     {
     	try{
-    		$data = $this->getValidatedRecipeDataFromRequest($request);
+            $recipe = $this->recipeService->fetchOneById($id);
+            $data = array_merge($recipe, $request->request->all());
             $res = $this->recipeService->updateRecipeById( $id, $data );
             return new JsonResponse('Update Successful');
     	} catch(RecipeInvalidException $e){
@@ -105,12 +106,13 @@ class RecipeController
     /**
      * adds a rating to a recipe
      * @access public
+     * @param int $id recipe_id
      * @param object HttpRequest object
      * @return JsonResponse object populated with insert id
      */
-    public function addRating(int $recipe_id, Request $request)
+    public function addRatingById(int $recipe_id, Request $request)
     {
-        $rating = $request['rating'];
+        $rating = $request->get('rating');
         $res = $this->recipeService->addRatingById($recipe_id, $rating);
         return new JsonResponse(["id"=>$res]);
     }
@@ -124,7 +126,7 @@ class RecipeController
     public function fetchRating(int $recipe_id)
     {
         $res = $this->recipeService->fetchRating($recipe_id);
-        if(count($res) > 0){}
+        if(count($res) > 0){
             return new JsonResponse($res);
         }
         return new JsonResponse('No Ratings for this recipe');
@@ -149,7 +151,7 @@ class RecipeController
             throw new RecipeInvalidException('Recipe title is required');
     	}
 
-    	if(!$validator->validate($data['recipe_cuisine']))
+    	if(!array_key_exists('recipe_cuisine', $data) ||  !$validator->validate($data['recipe_cuisine']))
     	{
     	    throw new RecipeInvalidException('Recipe does not have a valid cuisine');
     	}

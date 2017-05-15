@@ -10,7 +10,7 @@ namespace App;
 
 use Silex\Application;
 
-class ServicesLoader
+class ServiceLoader
 {
 	/**
      * @var $app Silex\Application
@@ -36,7 +36,7 @@ class ServicesLoader
     public function bindServicesIntoContainer()
     {
         $this->app['recipe.service'] = function() {
-            return new Services\RecipeService($this->app["db"]);
+            return new Service\RecipeService($this->app["db"]);
         };
     }
 }
