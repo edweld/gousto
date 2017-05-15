@@ -57,8 +57,8 @@ class RoutesLoader
         $api->get("/recipe/{id}", "recipe.controller:getOneById");
         $api->get("/recipe/cuisine/{cuisine}/{perpage}/{page}", "recipe.controller:getAllByCuisine");
         $api->post("/recipe/add", "recipe.controller:addRecipe");
-        $api->post("/recipe/update", "recipe.controller:updateRecipe");
-        $api->get("/recipe/rating/{recipe_id}", "recipe.controller:getRating");
+        $api->post("/recipe/update/{$id}", "recipe.controller:updateRecipeById");
+        $api->get("/recipe/rating/{recipe_id}", "recipe.controller:fetchRating");
         $api->post("/recipe/rating/{recipe_id}", "recipe.controller:addRating");
         $this->app->mount('/', $api);
     }

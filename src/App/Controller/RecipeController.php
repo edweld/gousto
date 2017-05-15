@@ -39,7 +39,7 @@ class RecipeController
      * @param int $id the recipe id
      * @return object JsonResonse object
      */
-    public function getOneById( $id )
+    public function fetchOneById( $id )
     {
     	$res = $this->recipeService->fetchOneById( (int) $id);
         if($res){
@@ -58,7 +58,7 @@ class RecipeController
      * @param int $page pagination page
      * @return object JsonResonse object, with error on invalid request
      */
-    public function getAllByCuisine($cuisine, $page, $perpage)
+    public function fetchAllByCuisine($cuisine, $page, $perpage)
     {
     	$validator = new CuisineValidator;
 
@@ -91,11 +91,11 @@ class RecipeController
      * @param object HttpRequest object containing recipe and id
      * @return object JsonResponse object populated with insert id or error
      */
-    public function updateRecipe(Request $request)
+    public function updateRecipeById(int $id, Request $request)
     {
     	try{
     		$data = $this->getValidatedRecipeDataFromRequest($request);
-            $res = $this->recipeService->updateRecipe( (int) $request->get('id'), $data );
+            $res = $this->recipeService->updateRecipeById( $id, $data );
             return new JsonResponse('Update Successful');
     	} catch(RecipeInvalidException $e){
     		return new JsonResponse('Error: ' . $e->getMessage(), 400);
@@ -108,12 +108,26 @@ class RecipeController
      * @param object HttpRequest object
      * @return JsonResponse object populated with insert id
      */
-    public function addRating(Request $request, $recipe_id)
+    public function addRating(int $recipe_id, Request $request)
     {
-        $id = (int) $request['recipe_id'];
         $rating = $request['rating'];
         $res = $this->recipeService->addRatingById($recipe_id, $rating);
         return new JsonResponse(["id"=>$res]);
+    }
+
+    /**
+     * retrieves rating for recipe
+     * @access public
+     * @param int $id recipe id to retrie
+     * @return JsonResponse object
+     */
+    public function fetchRating(int $recipe_id)
+    {
+        $res = $this->recipeService->fetchRating($recipe_id);
+        if(count($res) > 0){}
+            return new JsonResponse($res);
+        }
+        return new JsonResponse('No Ratings for this recipe');
     }
 
     /**
