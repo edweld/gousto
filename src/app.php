@@ -31,7 +31,7 @@ $app->before(function (Request $request) {
 
 /**
  * Because silex doesn't have functionality for serving OPTIONS request by default, 
- * this service goes through all of your routes and generates the necessary OPTIONS routes
+ * this service goes through all of the routes and generates the necessary OPTIONS routes
  */
 $app->register(new \Euskadi31\Silex\Provider\CorsServiceProvider);
 
@@ -53,16 +53,22 @@ $app->register(new MonologServiceProvider(), array(
     "monolog.name" => "application"
 ));
 
-//load services and bind them to container
+/**
+ * load services and bind them to container
+ */
 $serviceLoader = new App\ServiceLoader($app);
 $serviceLoader->bindServicesIntoContainer();
 
-//load routes and bind them to container
+/**
+ *load routes and bind them to container
+ */
 $routesLoader = new App\RoutesLoader($app);
 $routesLoader->bindRoutesToControllers();
 
 
-// define Monlog for error handling
+/**
+ * define Monlog for error handling
+ */
 $app->error(function (\Exception $e, $code) use ($app) {
     $app['monolog']->addError($e->getMessage());
     $app['monolog']->addError($e->getTraceAsString());
