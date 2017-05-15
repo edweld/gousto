@@ -18,7 +18,7 @@ class RecipeService extends BaseService {
      */
 	public function fetchOneById( int $id)
 	{
-
+        return $this->db->fetchAssoc("SELECT * FROM recipe WHERE id=?", [(int) $id]);
 	}
 
 	/**
@@ -61,10 +61,10 @@ class RecipeService extends BaseService {
 	 * Update existing recipe
 	 * @access public
 	 * @param int $id recipe id
-	 * @param mixed
+	 * @param mixed $recipe array of recipe data
 	 * @return int last insert id
 	 */
-	public function updateRecipeById(int $id, Request $request)
+	public function updateRecipeById(int $id, $recipe)
 	{
 
 	}
@@ -72,10 +72,10 @@ class RecipeService extends BaseService {
 	/**
 	 * Add new recipe
 	 * @access public 
-	 * @param mixed recipe data
+	 * @param mixed $recipe array of recipe data
 	 * @return int last insert id
 	 */
-	public function addRecipe(Request $request)
+	public function addRecipe($recipe)
 	{
 
 	}
