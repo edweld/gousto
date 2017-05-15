@@ -1,6 +1,9 @@
 <?php
 /**
- * Recipe Service
+ * Recipe Service: 
+ *
+ * This is the service container for handling recipe related data
+ *
  * @author: Ed Weld <edweld@gmail.com>
  * @package edweld/gousto <https://github.com/edweld/gousto>
  * PHP version 7

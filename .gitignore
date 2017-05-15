@@ -3,3 +3,4 @@ recipe-data.csv
 composer.lock
 vendor
 logs
+docs
