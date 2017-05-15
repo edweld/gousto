@@ -1,0 +1,26 @@
+{
+	"name": "edweld/gousto",
+	"type": "application",
+	"description": "Silex recipe API for Gousto",
+	"keywords": [
+		"framework", "silex", "rest", "api", "Gousto"
+	],
+	"homepage": "http://github.com/edweld/gousto",
+	"license": "MIT",
+	"authors": [{
+		"name": "Ed Weld",
+		"email": "edweld@gmail.com"
+	}],
+    "require": {
+        "silex/silex": "~2.0",
+        "doctrine/dbal": "~2.5",
+		"guzzlehttp/guzzle": "^6.1",
+		"euskadi31/cors-service-provider": "~1.0",
+		"monolog/monolog": "~1.11"
+    },
+    "autoload": {
+		"psr-0": {
+			"App": "src/"
+		}
+	}
+}
